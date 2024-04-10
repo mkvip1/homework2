@@ -3,6 +3,32 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
+    <changeSet author="ms.kuznetsov" id="001">
+        <comment>001 - Добавлена таблица для бизнес-сущности Задача</comment>
+        <createSequence sequenceName="task_sequence" incrementBy="1" startValue="1"/>
 
+        <createTable tableName="task">
+            <column name="id" type="BIGINT" defaultValueSequenceNext="task_sequence">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk__task"/>
+            </column>
+
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="due_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="completed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
 
 </databaseChangeLog>
