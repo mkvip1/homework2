@@ -3,6 +3,9 @@ package com.example.taskira.dto.in;
 import org.springframework.data.domain.Sort;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,15 +14,21 @@ import lombok.Setter;
 @Schema(description = "Параметры для пагинации")
 public class PageRequestParam {
 
+    @NotNull
+    @PositiveOrZero
     @Schema(description = "Номер страницы")
-    private int page = 0;
+    private int page;
 
+    @NotNull
+    @PositiveOrZero
     @Schema(description = "Размер")
     private int size = 10;
 
+    @NotBlank
     @Schema(description = "Поле для сортировки")
-    private String property = "id";
+    private String property;
 
+    @NotNull
     @Schema(description = "Направление сортировки")
-    private Sort.Direction direction = Sort.Direction.ASC;
+    private Sort.Direction direction;
 }
