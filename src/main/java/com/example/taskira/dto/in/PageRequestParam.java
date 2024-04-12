@@ -22,7 +22,7 @@ public class PageRequestParam {
     @NotNull
     @PositiveOrZero
     @Schema(description = "Размер")
-    private int size = 10;
+    private int size;
 
     @NotBlank
     @Schema(description = "Поле для сортировки")
