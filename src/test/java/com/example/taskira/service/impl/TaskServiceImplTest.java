@@ -1,10 +1,12 @@
 package com.example.taskira.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.example.taskira.exception.EntityNotFoundException;
 import com.example.taskira.repository.TaskRepository;
 import com.example.taskira.repository.entity.TaskEntity;
 import com.example.taskira.service.TaskService;
@@ -115,6 +118,41 @@ class TaskServiceImplTest {
         when(taskRepository.save(any(TaskEntity.class))).thenReturn(TaskDataUtils.testTaskEntity());
 
         final var actualTask = taskService.create(TaskDataUtils.testTaskCreateParam());
+        final var expectedTask = TaskDataUtils.testTaskEntity();
+
+        assertEqualsTaskEntity(expectedTask, actualTask);
+    }
+
+    /**
+     * Тест проверяет кол-во вызовов репозитория.
+     */
+    @Test
+    void findById__test_repo_usage_count() {
+        final Long testTaskId = 3L;
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
+        taskService.findById(testTaskId);
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(testTaskId);
+    }
+
+    /**
+     * Тест проверяет исключение в случае отсутствия Задачи.
+     */
+    @Test
+    void findById__test_entity_not_found_exception() {
+        final Long testTaskId = 3L;
+        final var exception = assertThrows(EntityNotFoundException.class, () -> taskService.findById(testTaskId));
+        assertEquals("Task with id = 3 not found", exception.getMessage());
+    }
+
+    /**
+     * Тест проверяет отсутствие мутаций у результата.
+     */
+    @Test
+    void findById__test_no_mutation_result() {
+        final Long testTaskId = 3L;
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
+
+        final var actualTask = taskService.findById(testTaskId);
         final var expectedTask = TaskDataUtils.testTaskEntity();
 
         assertEqualsTaskEntity(expectedTask, actualTask);
