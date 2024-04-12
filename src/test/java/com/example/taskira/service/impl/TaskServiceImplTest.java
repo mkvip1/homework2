@@ -271,7 +271,7 @@ class TaskServiceImplTest {
 
         final var updateParam = TaskDataUtils.createTaskUpdateParam(expectedTitle, expectedDescription,
                 expectedDueDate, expectedCompleted);
-        var actualTaskEntity = taskService.update(testTaskId, updateParam);
+        final var actualTaskEntity = taskService.update(testTaskId, updateParam);
 
         assertEquals(testTaskId, actualTaskEntity.getId());
         assertEquals(expectedTitle, actualTaskEntity.getTitle());
