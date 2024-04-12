@@ -158,6 +158,49 @@ class TaskServiceImplTest {
         assertEqualsTaskEntity(expectedTask, actualTask);
     }
 
+    /**
+     * Тест проверяет кол-во вызовов репозитория.
+     */
+    @Test
+    void delete__test_repo_usage_count() {
+        final Long testTaskId = 3L;
+
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
+        taskService.delete(testTaskId);
+
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(testTaskId);
+        Mockito.verify(taskRepository, Mockito.times(1)).delete(any(TaskEntity.class));
+    }
+
+    /**
+     * Тест проверяет исключение в случае отсутствия Задачи.
+     */
+    @Test
+    void delete__test_entity_not_found_exception() {
+        final Long testTaskId = 3L;
+        final var exception = assertThrows(EntityNotFoundException.class, () -> taskService.delete(testTaskId));
+        assertEquals("Task with id = 3 not found", exception.getMessage());
+    }
+
+    /**
+     * Тест проверяет отсутствие мутаций.
+     */
+    @Test
+    void delete__test_no_mutation_on_task_for_delete() {
+        final Long testTaskId = 3L;
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
+
+        taskService.delete(testTaskId);
+
+        final var taskEntityToDeleteArgCaptor = ArgumentCaptor.forClass(TaskEntity.class);
+        Mockito.verify(taskRepository).delete(taskEntityToDeleteArgCaptor.capture());
+
+        final var expectedTaskEntity = TaskDataUtils.testTaskEntity();
+        final var actualTaskEntityArg = taskEntityToDeleteArgCaptor.getValue();
+
+        assertEqualsTaskEntity(expectedTaskEntity, actualTaskEntityArg);
+    }
+
     private void assertEqualsTaskEntity(TaskEntity expected, TaskEntity actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getTitle(), actual.getTitle());
