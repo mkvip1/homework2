@@ -201,6 +201,85 @@ class TaskServiceImplTest {
         assertEqualsTaskEntity(expectedTaskEntity, actualTaskEntityArg);
     }
 
+    /**
+     * Тест проверяет кол-во вызовов репозитория.
+     */
+    @Test
+    void update__test_repo_usage_count() {
+        final Long testTaskId = 3L;
+
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
+        taskService.update(testTaskId, TaskDataUtils.testTaskUpdateParam());
+
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(testTaskId);
+        Mockito.verify(taskRepository, Mockito.times(1)).save(any(TaskEntity.class));
+    }
+
+    /**
+     * Тест проверяет исключение в случае отсутствия Задачи.
+     */
+    @Test
+    void update__test_entity_not_found_exception() {
+        final Long testTaskId = 3L;
+        final var exception = assertThrows(EntityNotFoundException.class, () -> taskService.update(testTaskId,
+                TaskDataUtils.testTaskUpdateParam()));
+        assertEquals("Task with id = 3 not found", exception.getMessage());
+    }
+
+    /**
+     * Тест проверяет отсутствие мутаций у входных параметров.
+     */
+    @Test
+    void update__test_no_mutation_create_param() {
+        final Long testTaskId = 3L;
+        final String expectedTitle = "title33";
+        final String expectedDescription = "description33";
+        final Instant expectedDueDate = Instant.parse("2024-02-19T00:00:00.00Z");
+        final boolean expectedCompleted = true;
+
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
+
+        final var updateParam = TaskDataUtils.createTaskUpdateParam(expectedTitle, expectedDescription,
+                expectedDueDate, expectedCompleted);
+        taskService.update(testTaskId, updateParam);
+
+        final var updTaskEntityArgCaptor = ArgumentCaptor.forClass(TaskEntity.class);
+        Mockito.verify(taskRepository).save(updTaskEntityArgCaptor.capture());
+
+        final var updTaskEntityArg = updTaskEntityArgCaptor.getValue();
+        assertEquals(testTaskId, updTaskEntityArg.getId());
+        assertEquals(expectedTitle, updTaskEntityArg.getTitle());
+        assertEquals(expectedDescription, updTaskEntityArg.getDescription());
+        assertEquals(expectedDueDate, updTaskEntityArg.getDueDate());
+        assertEquals(expectedCompleted, updTaskEntityArg.isCompleted());
+    }
+
+    /**
+     * Тест проверяет отсутствие мутаций у результата.
+     */
+    @Test
+    void update__test_no_mutation_result() {
+        final Long testTaskId = 3L;
+        final String expectedTitle = "title33";
+        final String expectedDescription = "description33";
+        final Instant expectedDueDate = Instant.parse("2024-02-19T00:00:00.00Z");
+        final boolean expectedCompleted = true;
+
+        var testTaskEntity = TaskDataUtils.testTaskEntity();
+        when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(testTaskEntity));
+        when(taskRepository.save(any(TaskEntity.class))).thenReturn(testTaskEntity);
+
+        final var updateParam = TaskDataUtils.createTaskUpdateParam(expectedTitle, expectedDescription,
+                expectedDueDate, expectedCompleted);
+        var actualTaskEntity = taskService.update(testTaskId, updateParam);
+
+        assertEquals(testTaskId, actualTaskEntity.getId());
+        assertEquals(expectedTitle, actualTaskEntity.getTitle());
+        assertEquals(expectedDescription, actualTaskEntity.getDescription());
+        assertEquals(expectedDueDate, actualTaskEntity.getDueDate());
+        assertEquals(expectedCompleted, actualTaskEntity.isCompleted());
+    }
+
     private void assertEqualsTaskEntity(TaskEntity expected, TaskEntity actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getTitle(), actual.getTitle());

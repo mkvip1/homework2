@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import com.example.taskira.dto.in.PageRequestParam;
 import com.example.taskira.dto.in.TaskCreateParam;
+import com.example.taskira.dto.in.TaskUpdateParam;
 import com.example.taskira.repository.entity.TaskEntity;
 
 public class TaskDataUtils {
@@ -17,8 +18,21 @@ public class TaskDataUtils {
     private TaskDataUtils() {
     }
 
+    public static TaskUpdateParam testTaskUpdateParam() {
+        return createTaskUpdateParam("title1", "description1", Instant.parse("2024-02-18T18:35:24.00Z"), true);
+    }
+
     public static TaskCreateParam testTaskCreateParam() {
         return createTaskCreateParam("title1", "description1", Instant.parse("2024-02-18T18:35:24.00Z"));
+    }
+
+    public static TaskUpdateParam createTaskUpdateParam(String title, String description, Instant dueDate, boolean completed) {
+        var taskUpdateParam = new TaskUpdateParam();
+        taskUpdateParam.setTitle(title);
+        taskUpdateParam.setDescription(description);
+        taskUpdateParam.setDueDate(dueDate);
+        taskUpdateParam.setCompleted(completed);
+        return taskUpdateParam;
     }
 
     public static TaskCreateParam createTaskCreateParam(String title, String description, Instant dueDate) {
