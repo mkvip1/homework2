@@ -34,7 +34,7 @@ class TaskServiceImplTest {
      * Тест проверяет кол-во вызовов репозитория.
      */
     @Test
-    void findTasks__test_repo_usage_count() {
+    void findTasks__test_usage_count() {
         taskService.findTasks(TaskDataUtils.testParam());
         Mockito.verify(taskRepository, Mockito.times(1)).findAll(any(Pageable.class));
     }
@@ -61,7 +61,7 @@ class TaskServiceImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void findTasks__test_no_mutation_page_request_param() {
+    void findTasks__test_no_mutation_param() {
         final int expectedPage = 22;
         final int expectedSize = 100;
         final String expectedProperty = "title";
@@ -84,7 +84,7 @@ class TaskServiceImplTest {
      * Тест проверяет кол-во вызовов репозитория.
      */
     @Test
-    void create__test_repo_usage_count() {
+    void create__test_usage_count() {
         taskService.create(TaskDataUtils.testTaskCreateParam());
         Mockito.verify(taskRepository, Mockito.times(1)).save(any(TaskEntity.class));
     }
@@ -93,7 +93,7 @@ class TaskServiceImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void create__test_no_mutation_create_param() {
+    void create__test_no_mutation_param() {
         final String expectedTitle = "title1";
         final String expectedDescription = "description1";
         final Instant expectedDueDate = Instant.parse("2024-02-18T18:35:24.00Z");
@@ -127,7 +127,7 @@ class TaskServiceImplTest {
      * Тест проверяет кол-во вызовов репозитория.
      */
     @Test
-    void findById__test_repo_usage_count() {
+    void findById__test_usage_count() {
         final Long testTaskId = 3L;
         when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
         taskService.findById(testTaskId);
@@ -162,7 +162,7 @@ class TaskServiceImplTest {
      * Тест проверяет кол-во вызовов репозитория.
      */
     @Test
-    void delete__test_repo_usage_count() {
+    void delete__test_usage_count() {
         final Long testTaskId = 3L;
 
         when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
@@ -205,7 +205,7 @@ class TaskServiceImplTest {
      * Тест проверяет кол-во вызовов репозитория.
      */
     @Test
-    void update__test_repo_usage_count() {
+    void update__test_usage_count() {
         final Long testTaskId = 3L;
 
         when(taskRepository.findById(testTaskId)).thenReturn(Optional.of(TaskDataUtils.testTaskEntity()));
@@ -230,7 +230,7 @@ class TaskServiceImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void update__test_no_mutation_update_param() {
+    void update__test_no_mutation_param() {
         final Long testTaskId = 3L;
         final String expectedTitle = "title33";
         final String expectedDescription = "description33";
