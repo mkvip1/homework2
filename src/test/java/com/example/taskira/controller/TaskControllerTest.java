@@ -121,7 +121,7 @@ class TaskControllerTest {
         when(taskWebFacade.create(any(TaskCreateParam.class)))
                 .thenReturn(TaskDataUtils.testTaskResponse());
 
-        final var actualTask = taskWebFacade.create(TaskDataUtils.testTaskCreateParam());
+        final var actualTask = taskController.createTask(TaskDataUtils.testTaskCreateParam());
         final var expectedTask = TaskDataUtils.testTaskResponse();
 
         assertEqualsTaskResponse(expectedTask, actualTask);
