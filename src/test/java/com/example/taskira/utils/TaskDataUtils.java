@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import com.example.taskira.dto.in.PageRequestParam;
 import com.example.taskira.dto.in.TaskCreateParam;
 import com.example.taskira.dto.in.TaskUpdateParam;
+import com.example.taskira.dto.out.PageResponse;
+import com.example.taskira.dto.out.TaskResponse;
 import com.example.taskira.repository.entity.TaskEntity;
 
 public class TaskDataUtils {
@@ -43,8 +45,19 @@ public class TaskDataUtils {
         return taskCreateParam;
     }
 
+    public static PageResponse<TaskResponse> testPageResponse() {
+        return new PageResponse<>(testResponseList(), 5L, 15L, 0L);
+    }
+
     public static Page<TaskEntity> testPage() {
         return new PageImpl<>(testList(), testPageRequest(), 100);
+    }
+
+    public static List<TaskResponse> testResponseList() {
+        var task1 = createTaskResponse(1L, "title1", "description1", "2024-01-30T18:35:24.00Z", true);
+        var task2 = createTaskResponse(2L, "title2", "description2", "2024-02-18T18:35:24.00Z", false);
+        var task3 = createTaskResponse(3L, "title3", "description3", "2024-03-30T18:35:24.00Z", false);
+        return List.of(task1, task2, task3);
     }
 
     public static List<TaskEntity> testList() {
@@ -52,6 +65,10 @@ public class TaskDataUtils {
         var task2 = createTaskEntity(2L, "title2", "description2", "2024-02-18T18:35:24.00Z", false);
         var task3 = createTaskEntity(3L, "title3", "description3", "2024-03-30T18:35:24.00Z", false);
         return List.of(task1, task2, task3);
+    }
+
+    public static TaskResponse testTaskResponse() {
+        return createTaskResponse(3L, "title3", "description3", "2024-03-30T18:35:24.00Z", false);
     }
 
     public static TaskEntity testTaskEntity() {
@@ -67,6 +84,17 @@ public class TaskDataUtils {
         e.setDueDate(Instant.parse(dueDate));
         e.setCompleted(completed);
         return e;
+    }
+
+    public static TaskResponse createTaskResponse(Long id, String title, String description,
+            String dueDate, boolean completed) {
+        var r = new TaskResponse();
+        r.setId(id);
+        r.setTitle(title);
+        r.setDescription(description);
+        r.setDueDate(Instant.parse(dueDate));
+        r.setCompleted(completed);
+        return r;
     }
 
     public static PageRequest testPageRequest() {
