@@ -230,7 +230,7 @@ class TaskServiceImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void update__test_no_mutation_create_param() {
+    void update__test_no_mutation_update_param() {
         final Long testTaskId = 3L;
         final String expectedTitle = "title33";
         final String expectedDescription = "description33";
