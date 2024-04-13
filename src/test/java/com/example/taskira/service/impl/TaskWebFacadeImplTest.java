@@ -56,14 +56,14 @@ class TaskWebFacadeImplTest {
         final var pageRequestParam = TaskDataUtils.createPageRequestParam(expectedPage, expectedSize, expectedProperty, expectedDirection);
         taskWebFacade.findTasks(pageRequestParam);
 
-        final var pageableParamsArgCaptor = ArgumentCaptor.forClass(PageRequestParam.class);
-        Mockito.verify(taskService).findTasks(pageableParamsArgCaptor.capture());
+        final var pageRequestParamArgCaptor = ArgumentCaptor.forClass(PageRequestParam.class);
+        Mockito.verify(taskService).findTasks(pageRequestParamArgCaptor.capture());
 
-        final var pageableParamsArg = pageableParamsArgCaptor.getValue();
-        assertEquals(expectedPage, pageableParamsArg.getPage());
-        assertEquals(expectedSize, pageableParamsArg.getSize());
-        assertEquals(expectedProperty, pageableParamsArg.getProperty());
-        assertEquals(expectedDirection, pageableParamsArg.getDirection());
+        final var pageRequestParamArg = pageRequestParamArgCaptor.getValue();
+        assertEquals(expectedPage, pageRequestParamArg.getPage());
+        assertEquals(expectedSize, pageRequestParamArg.getSize());
+        assertEquals(expectedProperty, pageRequestParamArg.getProperty());
+        assertEquals(expectedDirection, pageRequestParamArg.getDirection());
     }
 
     /**
