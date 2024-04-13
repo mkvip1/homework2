@@ -38,7 +38,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет кол-во вызовов сервиса.
      */
     @Test
-    void findTasks__test_service_usage_count() {
+    void findTasks__test_usage_count() {
         taskWebFacade.findTasks(TaskDataUtils.testParam());
         Mockito.verify(taskService, Mockito.times(1)).findTasks(any(PageRequestParam.class));
     }
@@ -47,7 +47,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void findTasks__test_no_mutation_page_request_param() {
+    void findTasks__test_no_mutation_param() {
         final int expectedPage = 22;
         final int expectedSize = 100;
         final String expectedProperty = "title";
@@ -89,7 +89,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет кол-во вызовов сервиса.
      */
     @Test
-    void createTask__test_service_usage_count() {
+    void createTask__test_usage_count() {
         taskWebFacade.create(TaskDataUtils.testTaskCreateParam());
         Mockito.verify(taskService, Mockito.times(1)).create(any(TaskCreateParam.class));
     }
@@ -98,7 +98,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void createTask__test_no_mutation_create_param() {
+    void createTask__test_no_mutation_param() {
         final String expectedTitle = "title1";
         final String expectedDescription = "description1";
         final Instant expectedDueDate = Instant.parse("2024-02-18T18:35:24.00Z");
@@ -133,7 +133,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет кол-во вызовов сервиса.
      */
     @Test
-    void findById__test_service_usage_count() {
+    void findById__test_usage_count() {
         final Long testTaskId = 3L;
         taskWebFacade.findById(testTaskId);
         Mockito.verify(taskService, Mockito.times(1)).findById(testTaskId);
@@ -168,7 +168,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет кол-во вызовов сервиса.
      */
     @Test
-    void updateTask__test_service_usage_count() {
+    void updateTask__test_usage_count() {
         final Long testTaskId = 3L;
         taskWebFacade.update(testTaskId, TaskDataUtils.testTaskUpdateParam());
         Mockito.verify(taskService, Mockito.times(1)).update(eq(testTaskId), any(TaskUpdateParam.class));
@@ -191,7 +191,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет отсутствие мутаций у входных параметров.
      */
     @Test
-    void updateTask__test_no_mutation_update_param() {
+    void updateTask__test_no_mutation_param() {
         final Long testTaskId = 3L;
         final String expectedTitle = "title33";
         final String expectedDescription = "description33";
@@ -236,7 +236,7 @@ class TaskWebFacadeImplTest {
      * Тест проверяет кол-во вызовов сервиса.
      */
     @Test
-    void deleteTask__test_service_usage_count() {
+    void deleteTask__test_usage_count() {
         final Long testTaskId = 3L;
         taskWebFacade.delete(testTaskId);
         Mockito.verify(taskService, Mockito.times(1)).delete(testTaskId);
